@@ -11,7 +11,7 @@ const register = async (req, res) => {
     if (user) {
         throw new Conflict(`Email in use`)
     }
-    const avatarURL = gravatar.url(email);
+    const avatarURL = gravatar.url(email, { d: 'identicon' });
     const newUser = new User({ name, email, avatarURL });
     newUser.setPassword(password);
     newUser.save();
