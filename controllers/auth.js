@@ -1,6 +1,7 @@
 const { Conflict, Unauthorized } = require('http-errors');
 const bcript = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const gravatar = require('gravatar');
 
 const { User } = require('../models/user');
 
@@ -10,7 +11,8 @@ const register = async (req, res) => {
     if (user) {
         throw new Conflict(`Email in use`)
     }
-    const newUser = new User({ name, email });
+    const avatarURL = gravatar.url(email);
+    const newUser = new User({ name, email, avatarURL });
     newUser.setPassword(password);
     newUser.save();
     res.status(201).json({
@@ -19,7 +21,8 @@ const register = async (req, res) => {
         data: {
             user: {
                 email,
-                name
+                name,
+                avatarURL
             }
         }
         
